@@ -10,16 +10,6 @@ const featuredStudents = await getCollection('students', ({ data }) => data.feat
 <BaseLayout title="Trang Chủ" lang="vi">
   <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
     
-    <!-- HERO SECTION -->
-    <section class="mb-24">
-      <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight text-black dark:text-white leading-[1.1]">
-        Code. <br/>Chế tác. <br/>Chia sẻ.
-      </h1>
-      <p class="text-lg md:text-xl text-black/60 dark:text-white/60 leading-relaxed max-w-2xl font-medium">
-        Không gian số của Trần Trí Phong. Nơi trưng bày dự án mã nguồn mở và lưu trữ thành quả của học trò.
-      </p>
-    </section>
-
     <!-- PROJECT CENTER (Dự án của mày) -->
     <section id="games" class="mb-24">
       <h2 class="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-[0.2em] mb-8 border-b border-black/10 dark:border-white/10 pb-4">Personal Projects</h2>
@@ -61,7 +51,4 @@ const featuredStudents = await getCollection('students', ({ data }) => data.feat
           </div>
         ))}
       </div>
-    </section>
-
-  </div>
 </BaseLayout>
