@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Tự động kéo dữ liệu từ kho ra
+const featuredProjects = await getCollection('projects', ({ data }) => data.featured === true);
+const featuredStudents = await getCollection('students', ({ data }) => data.featured === true);
+---
+
+<BaseLayout title="Trang Chủ" lang="vi">
+  <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
+    
+    <!-- HERO SECTION -->
+    <section class="mb-24">
+      <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight text-black dark:text-white leading-[1.1]">
+        Code. <br/>Chế tác. <br/>Chia sẻ.
+      </h1>
+      <p class="text-lg md:text-xl text-black/60 dark:text-white/60 leading-relaxed max-w-2xl font-medium">
+        Không gian số của Trần Trí Phong. Nơi trưng bày dự án mã nguồn mở và lưu trữ thành quả của học trò.
+      </p>
+    </section>
+
+    <!-- PROJECT CENTER (Dự án của mày) -->
+    <section id="games" class="mb-24">
+      <h2 class="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-[0.2em] mb-8 border-b border-black/10 dark:border-white/10 pb-4">Personal Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredProjects.map((p) => (
+          <div class="group p-8 border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors flex flex-col justify-between bg-black/[0.02] dark:bg-white/[0.02]">
+            <div>
+                <h3 class="text-2xl font-bold text-black dark:text-white mb-4">{p.data.title}</h3>
+                <p class="text-sm text-black/60 dark:text-white/60 mb-8 leading-relaxed">{p.data.description}</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <div class="flex gap-2">
+                {p.data.techStack.map(tag => <span class="text-[11px] font-mono text-black/50 dark:text-white/50">#{tag}</span>)}
+              </div>
+              <a href={`/projects/${p.id}`} class="bg-black text-white dark:bg-white dark:text-black px-5 py-2.5 text-sm font-bold hover:bg-black/80 dark:hover:bg-white/80 transition-colors">Chi tiết →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- STUDENTS SHOWCASE (Dự án học sinh) -->
+    <section id="students" class="mb-24">
+      <h2 class="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-[0.2em] mb-8 border-b border-black/10 dark:border-white/10 pb-4">Students Showcase</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredStudents.map((s) => (
+          <div class="p-6 border border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors flex flex-col justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{s.data.studentName}</span>
+                <span class="text-[10px] font-mono text-black/40 dark:text-white/40 border border-black/10 dark:border-white/10 px-2 py-0.5">{s.data.age} tuổi</span>
+              </div>
+              <h3 class="text-xl font-bold text-black dark:text-white mb-3">{s.data.title}</h3>
+              <p class="text-sm text-black/60 dark:text-white/60 italic border-l-2 border-emerald-500 pl-3 py-1">"{s.data.mentorNote}"</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              {s.data.techStack.map(tag => <span class="text-[11px] font-mono text-black/50 dark:text-white/50">[{tag}]</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

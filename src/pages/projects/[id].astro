@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+// 1. Astro sẽ mò vào kho tìm tất cả dự án và tạo sẵn đường dẫn cho tụi nó
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+// 2. Bốc nội dung của dự án đang được click vào
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title}>
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    
+    <!-- Nút quay xe -->
+    <a href="/" class="text-sm font-mono text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white mb-10 inline-block transition-colors border-b border-transparent hover:border-black dark:hover:border-white pb-0.5">
+      [← Return_to_Hub]
+    </a>
+    
+    <!-- Header bài viết -->
+    <header class="mb-12 pb-8 border-b border-black/10 dark:border-white/10">
+      <div class="flex gap-2 mb-6">
+        {project.data.techStack.map(tag => <span class="text-[11px] font-mono border border-black/10 dark:border-white/10 px-2 py-1 opacity-60">#{tag}</span>)}
+      </div>
+      <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{project.data.title}</h1>
+      <p class="text-lg text-black/60 dark:text-white/60 font-medium">{project.data.description}</p>
+    </header>
+
+    <!-- NỘI DUNG FILE MARKDOWN SẼ RỚT VÀO ĐÂY -->
+    <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg">
+      <Content />
+    </article>
+    
+  </div>
+</BaseLayout>
+
+<!-- CSS trang điểm lại cho nội dung file Markdown -->
+<style is:global>
+  .markdown-content h1, .markdown-content h2, .markdown-content h3 { font-weight: 800; color: inherit; margin-top: 2.5rem; margin-bottom: 1rem; }
+  .markdown-content h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 0.5rem; }
+  .markdown-content p { margin-bottom: 1.5rem; }
+  .markdown-content a { color: #10b981; text-decoration: underline; text-underline-offset: 4px; font-weight: 500;}
+  .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  .markdown-content li { margin-bottom: 0.5rem; }
+  .markdown-content code { background-color: rgba(128,128,128,0.1); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #10b981; font-weight: bold;}
+  .markdown-content pre { background-color: #111; padding: 1.5rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
+  .markdown-content pre code { background-color: transparent; color: #e5e5e5; padding: 0; font-weight: normal; }
+</style>

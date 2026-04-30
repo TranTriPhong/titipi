@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const students = await getCollection('students');
+  return students.map(student => ({
+    params: { id: student.id },
+    props: { student },
+  }));
+}
+
+const { student } = Astro.props;
+const { Content } = await render(student);
+---
+
+<BaseLayout title={student.data.title}>
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    <a href="/" class="text-sm font-mono text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white mb-10 inline-block transition-colors border-b border-transparent hover:border-black dark:hover:border-white pb-0.5">
+      [← Return_to_Hub]
+    </a>
+    
+    <header class="mb-12 pb-8 border-b border-black/10 dark:border-white/10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-sm font-bold text-emerald-500 uppercase tracking-widest">{student.data.studentName}</span>
+        <span class="text-xs font-mono text-black/40 dark:text-white/40 border border-black/10 dark:border-white/10 px-2 py-0.5">{student.data.age} tuổi</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{student.data.title}</h1>
+      <p class="text-lg text-black/60 dark:text-white/60 italic border-l-4 border-emerald-500 pl-4 py-2 bg-black/[0.02] dark:bg-white/[0.02]">
+        "Mentor Note: {student.data.mentorNote}"
+      </p>
+    </header>
+
+    <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg">
+      <Content />
+    </article>
+  </div>
+</BaseLayout>
