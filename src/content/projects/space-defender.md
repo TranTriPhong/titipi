@@ -9,7 +9,7 @@ publishDate: 2026-05-01
 
 Dự án này được viết hoàn toàn bằng JavaScript thuần không dùng engine để rèn luyện tư duy xử lý va chạm (collision detection) và quản lý bộ nhớ.
 
-<iframe src="/games/space-defender/index.html" width="100%" height="500" style="border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; margin: 20px 0;"></iframe>
+<iframe src="/games/space-defender/index.html" width="100%" height="600" style="border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; margin: 20px 0;"></iframe>
 
 ### Tính năng chính
 * Hệ thống hạt (Particle system) khi tiêu diệt địch.

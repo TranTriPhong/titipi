@@ -12,8 +12,15 @@
     canvas {
       background: linear-gradient(to bottom, #0a0f18 0%, #050505 100%);
       border: 2px solid rgba(16, 185, 129, 0.4);
-      border-radius: 12px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+      border-radius: 12px; 
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
       cursor: crosshair;
+
+      /* Note to self: Bắt đầu phần CSS co giãn cho mobile */
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 400 / 550; /* Giữ đúng tỷ lệ khung hình game */
+      touch-action: none; /* Ngăn chặn việc vuốt nhầm làm cuộn trang trên điện thoại */
     }
   </style>
 </head>
