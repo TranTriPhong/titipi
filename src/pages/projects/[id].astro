@@ -48,11 +48,34 @@ const { Content } = await render(project);
     <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg">
       <Content />
     </article>
+    <!-- NỘI DUNG FILE MARKDOWN (Gồm cả cái Iframe màn hình game) -->
+    <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg mb-16">
+      <Content />
+    </article>
     
+    <!-- KHU VỰC BÌNH LUẬN GISCUS -->
+    <div class="comments-section border-t border-black/10 dark:border-white/10 pt-10">
+      <h3 class="text-2xl font-bold mb-6">Comments</h3>
+      <script src="https://giscus.app/client.js"
+              data-repo="TranTriPhong/titipi"
+              data-repo-id="R_kgDOSRBQMw"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOSRBQM84C8F6H"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="preferred_color_scheme"
+              data-lang="vi"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
   </div>
 </BaseLayout>
 
-<!-- CSS trang điểm lại cho nội dung file Markdown (GIỮ NGUYÊN CỦA SẾP) -->
+<!-- CSS trang điểm lại cho nội dung file Markdown -->
 <style is:global>
   .markdown-content h1, .markdown-content h2, .markdown-content h3 { font-weight: 800; color: inherit; margin-top: 2.5rem; margin-bottom: 1rem; }
   .markdown-content h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 0.5rem; }

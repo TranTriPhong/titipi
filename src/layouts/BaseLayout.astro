@@ -96,4 +96,38 @@ const { title, lang = "vi" } = Astro.props;
       .nav-link:hover::after { width: 100%; }
     </style>
   </body>
+  <style is:global>
+  /* 1. Đổi màu khi bôi đen văn bản (Text Selection) */
+  /* Thay vì màu xanh dương mặc định phèn phèn, bôi đen chữ sẽ ra màu xanh ngọc đồng bộ logo */
+  ::selection {
+    background-color: #10b981; 
+    color: #ffffff;
+  }
+  ::-moz-selection {
+    background-color: #10b981;
+    color: #ffffff;
+  }
+
+  /* 2. Custom Thanh cuộn (Scrollbar) chuẩn phong cách Hacker/Tech */
+  /* Gọt cho thanh cuộn ốm lại và đổi sang màu xanh ngọc */
+  ::-webkit-scrollbar {
+    width: 6px; /* Thanh cuộn siêu mỏng */
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Nền trong suốt */
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.3); /* Xanh ngọc mờ ẩn hiện */
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.8); /* Đậm lên khi di chuột vào */
+  }
+
+  /* 3. Cuộn trang mượt mà (Smooth Scrolling) */
+  /* Bấm vào thẻ neo (#games) nó sẽ trượt từ từ xuống thay vì giật cục phát một */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
 </html>
