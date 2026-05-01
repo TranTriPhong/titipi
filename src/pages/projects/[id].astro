@@ -49,50 +49,126 @@ const { Content } = await render(project);
       <Content />
     </article>
     
+    <!-- --- BẮT ĐẦU: KHUNG CHAT AI PHONG CÁCH CLEAN TECH --- -->
+    <section class="mt-16 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 backdrop-blur-sm">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2 font-sans tracking-tight">
+        <span class="text-emerald-500">✦</span> Trợ lý AI titipi
+      </h3>
+      <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-4">Có phần nào trong bài viết chưa rõ? Hãy hỏi trực tiếp AI nhé.</p>
+      
+      <div class="flex gap-3 mb-4">
+        <input 
+          type="text" 
+          id="ai-input" 
+          placeholder="Ví dụ: Giải thích lại thuật toán này..." 
+          class="flex-1 px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm transition-all"
+        />
+        <button 
+          id="ai-btn" 
+          class="px-6 py-3 bg-zinc-900 hover:bg-emerald-500 dark:bg-white dark:hover:bg-emerald-500 dark:text-black dark:hover:text-white text-white font-semibold rounded-xl text-sm transition-colors"
+        >
+          Hỏi
+        </button>
+      </div>
+
+      <div id="ai-response" class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 hidden p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+        <!-- Nơi nhả chữ của AI -->
+      </div>
+    </section>
+    <!-- --- KẾT THÚC: KHUNG CHAT AI --- -->
+
     <!-- Container rỗng để chứa bình luận -->
-<section class="mt-20 pt-10 border-t border-black/10 dark:border-white/10">
-  <div id="giscus-container"></div>
-</section>
+    <section class="mt-12 pt-10 border-t border-black/10 dark:border-white/10">
+      <div id="giscus-container"></div>
+    </section>
 
-<script>
-  // Hàm này sẽ tự động tạo thẻ script của Giscus và bơm vào web
-  const loadGiscus = () => {
-    const container = document.getElementById('giscus-container');
-    if (!container) return;
+    <script>
+      // ==========================================
+      // PHẦN 1: HÀM XỬ LÝ BÌNH LUẬN GISCUS
+      // ==========================================
+      const loadGiscus = () => {
+        const container = document.getElementById('giscus-container');
+        if (!container) return;
 
-    // 1. Xóa sạch khung bình luận của bài cũ đi
-    container.innerHTML = '';
+        container.innerHTML = '';
+        const isDark = document.documentElement.classList.contains('dark');
+        const theme = isDark ? 'transparent_dark' : 'light';
 
-    // 2. Lấy theme hiện tại để Giscus tự động đổi Dark/Light theo web
-    const isDark = document.documentElement.classList.contains('dark');
-    const theme = isDark ? 'transparent_dark' : 'light';
+        const script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        
+        script.setAttribute('data-repo', 'TranTriPhong/titipi'); 
+        script.setAttribute('data-repo-id', 'R_kgDOSRBQMw5');
+        script.setAttribute('data-category', 'Announcements');
+        script.setAttribute('data-category-id', 'DIC_kwDOSRBQM84C8F6H');
+        script.setAttribute('data-mapping', 'pathname'); 
+        script.setAttribute('data-strict', '0');
+        script.setAttribute('data-reactions-enabled', '1');
+        script.setAttribute('data-emit-metadata', '0');
+        script.setAttribute('data-input-position', 'bottom');
+        script.setAttribute('data-theme', theme);
+        script.setAttribute('data-lang', 'vi');
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
 
-    // 3. Tạo thẻ script mới tinh
-    const script = document.createElement('script');
-    script.src = 'https://giscus.app/client.js';
-    
-    // ĐIỀN THÔNG TIN GITHUB VÀO ĐÂY (Lấy trên web Giscus)
-    script.setAttribute('data-repo', 'TranTriPhong/titipi'); 
-    script.setAttribute('data-repo-id', 'R_kgDOSRBQMw5');
-    script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'DIC_kwDOSRBQM84C8F6H');
-    script.setAttribute('data-mapping', 'pathname'); // Bắt buộc dùng pathname để phân biệt các bài
-    script.setAttribute('data-strict', '0');
-    script.setAttribute('data-reactions-enabled', '1');
-    script.setAttribute('data-emit-metadata', '0');
-    script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', theme);
-    script.setAttribute('data-lang', 'vi');
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
+        container.appendChild(script);
+      };
 
-    // Bơm vào web
-    container.appendChild(script);
-  };
+      // ==========================================
+      // PHẦN 2: HÀM XỬ LÝ TRỢ LÝ AI
+      // ==========================================
+      const setupAI = () => {
+        const btn = document.getElementById('ai-btn');
+        const input = document.getElementById('ai-input') as HTMLInputElement;
+        const responseDiv = document.getElementById('ai-response');
+        
+        // Vét sạch text của bài viết đang đọc
+        const article = document.querySelector('article');
+        const articleContext = article ? article.innerText : '';
 
-  // Astro 5 API: Chạy hàm này mỗi khi trang được load (Kể cả load lần đầu hay bấm chuyển bài)
-  document.addEventListener('astro:page-load', loadGiscus);
-</script>
+        btn?.addEventListener('click', async () => {
+          const question = input.value.trim();
+          if (!question) return;
+
+          responseDiv.classList.remove('hidden');
+          responseDiv.innerHTML = '<div class="flex items-center gap-2 text-zinc-500"><svg class="animate-spin h-4 w-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang trích xuất dữ liệu...</div>';
+
+          try {
+            const res = await fetch('/api/ask', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ question, context: articleContext })
+            });
+            
+            const data = await res.json();
+            
+            if (data.error) {
+               responseDiv.innerHTML = `<span class="text-red-500">${data.error}</span>`;
+               return;
+            }
+
+            responseDiv.innerHTML = data.answer.replace(/\n/g, '<br>'); 
+            input.value = '';
+          } catch (e) {
+            responseDiv.innerHTML = '<span class="text-red-500">Lỗi mất kết nối máy chủ!</span>';
+          }
+        });
+
+        // Hỗ trợ bấm Enter để gửi câu hỏi
+        input?.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            btn.click();
+          }
+        });
+      };
+
+      // ==========================================
+      // KÍCH HOẠT CẢ 2 TÍNH NĂNG KHI CHUYỂN TRANG
+      // ==========================================
+      document.addEventListener('astro:page-load', loadGiscus);
+      document.addEventListener('astro:page-load', setupAI);
+    </script>
+  </div>
 </BaseLayout>
 
 <!-- CSS trang điểm lại cho nội dung file Markdown -->

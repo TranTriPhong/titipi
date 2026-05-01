@@ -4,8 +4,12 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 import sitemap from '@astrojs/sitemap';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
+  // 1. Thêm dòng này để kích hoạt lai giữa tĩnh (tốc độ cao) và động (gọi AI)
+  output: 'hybrid',
+
   vite: {
     plugins: [tailwindcss()],
   },
@@ -17,4 +21,5 @@ export default defineConfig({
   },
 
   integrations: [sitemap()],
+  adapter: vercel(),
 });
