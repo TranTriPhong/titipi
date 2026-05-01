@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-// 1. Import ClientRouter từ thư viện của Astro
+import 'katex/dist/katex.min.css';
 import { ClientRouter } from 'astro:transitions';
 
 const { title, lang = "vi" } = Astro.props;
@@ -14,12 +14,6 @@ const { title, lang = "vi" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>titipi.</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- 1. Kích hoạt chuyển trang mượt mà (View Transitions) -->
-    <ClientRouter />
-
-    <!-- 2. Load CSS của KaTeX để hiển thị công thức toán học -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqO1bE+qL856KowSb7dwlZdYmEKO39GZ" crossorigin="anonymous">
 
     <!-- 3. Script xử lý Dark Mode cực mạnh (Tự động + Real-time + Hỗ trợ Chuyển trang) -->
     <script is:inline>
