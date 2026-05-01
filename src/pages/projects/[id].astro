@@ -16,21 +16,32 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 ---
 
-<BaseLayout title={project.data.title}>
-  <div class="max-w-3xl mx-auto px-6 py-16">
+<BaseLayout title={`${project.data.title} | titipi.`} lang="vi">
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
     
-    <!-- Nút quay xe -->
-    <a href="/" class="text-sm font-mono text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white mb-10 inline-block transition-colors border-b border-transparent hover:border-black dark:hover:border-white pb-0.5">
-      [← Return]
+    <!-- Nút quay xe xịn xò -->
+    <a href="/#games" class="group inline-flex items-center gap-2 text-sm font-mono text-black/50 dark:text-white/50 hover:text-emerald-500 dark:hover:text-emerald-400 mb-16 transition-colors">
+      <span class="transition-transform group-hover:-translate-x-1">←</span> 
+      <span>Return</span>
     </a>
     
     <!-- Header bài viết -->
-    <header class="mb-12 pb-8 border-b border-black/10 dark:border-white/10">
-      <div class="flex gap-2 mb-6">
-        {project.data.techStack.map(tag => <span class="text-[11px] font-mono border border-black/10 dark:border-white/10 px-2 py-1 opacity-60">#{tag}</span>)}
+    <header class="mb-16 border-b border-black/10 dark:border-white/10 pb-12">
+      <div class="flex flex-wrap gap-2 mb-6">
+        {project.data.techStack.map(tag => (
+          <span class="text-[11px] font-mono text-black/70 dark:text-white/70 bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded-full">
+            #{tag}
+          </span>
+        ))}
       </div>
-      <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{project.data.title}</h1>
-      <p class="text-lg text-black/60 dark:text-white/60 font-medium">{project.data.description}</p>
+      
+      <h1 class="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-6 leading-tight tracking-tight">
+        {project.data.title}
+      </h1>
+      
+      <p class="text-lg text-black/60 dark:text-white/60 leading-relaxed border-l-2 border-emerald-500 pl-4">
+        {project.data.description}
+      </p>
     </header>
 
     <!-- NỘI DUNG FILE MARKDOWN SẼ RỚT VÀO ĐÂY -->
@@ -41,7 +52,7 @@ const { Content } = await render(project);
   </div>
 </BaseLayout>
 
-<!-- CSS trang điểm lại cho nội dung file Markdown -->
+<!-- CSS trang điểm lại cho nội dung file Markdown (GIỮ NGUYÊN CỦA SẾP) -->
 <style is:global>
   .markdown-content h1, .markdown-content h2, .markdown-content h3 { font-weight: 800; color: inherit; margin-top: 2.5rem; margin-bottom: 1rem; }
   .markdown-content h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 0.5rem; }
