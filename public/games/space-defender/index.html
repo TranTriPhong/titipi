@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Defender Pro - Easy Mode</title>
+  <style>
+    body {
+      margin: 0; background-color: #050505; display: flex;
+      justify-content: center; align-items: center; height: 100vh;
+      color: #10b981; font-family: 'Courier New', Courier, monospace; overflow: hidden;
+    }
+    canvas {
+      background: linear-gradient(to bottom, #0a0f18 0%, #050505 100%);
+      border: 2px solid rgba(16, 185, 129, 0.4);
+      border-radius: 12px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="400" height="550"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let state = 'START';
+    let score = 0;
+    let frames = 0;
+    let baseHp = 3; 
+
+    const keys = {};
+    window.addEventListener('keydown', e => {
+      keys[e.code] = true;
+      if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+        e.preventDefault();
+      }
+    });
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    let stars = [], bullets = [], enemies = [], particles = [];
+
+    for(let i=0; i<100; i++) {
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 1.5 + 0.5 });
+    }
+
+    const player = {
+      x: 200, y: 470, speed: 5.5, cooldown: 0,
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        
+        if (Math.random() > 0.3) {
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(-5, 10); ctx.lineTo(5, 10); ctx.lineTo(0, 25 + Math.random() * 10);
+            ctx.fill();
+        }
+
+        ctx.fillStyle = '#10b981';
+        ctx.shadowBlur = 10; ctx.shadowColor = '#10b981';
+        ctx.beginPath();
+        ctx.moveTo(0, -20);
+        ctx.lineTo(15, 15);
+        ctx.lineTo(0, 5);
+        ctx.lineTo(-15, 15);
+        ctx.closePath(); ctx.fill();
+        ctx.restore();
+      },
+      update() {
+        if ((keys['ArrowLeft'] || keys['KeyA']) && this.x > 15) this.x -= this.speed;
+        if ((keys['ArrowRight'] || keys['KeyD']) && this.x < canvas.width - 15) this.x += this.speed;
+        
+        if (this.cooldown > 0) this.cooldown--;
+        if (keys['Space'] && this.cooldown === 0) {
+          bullets.push({ x: this.x, y: this.y - 20, speed: 12 });
+          this.cooldown = 8; 
+        }
+      }
+    };
+
+    function createExplosion(x, y, color) {
+      for(let i = 0; i < 20; i++) {
+        particles.push({
+          x: x, y: y,
+          vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8,
+          life: 30, color: color
+        });
+      }
+    }
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(s => {
+        s.y += s.speed;
+        if(s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+        ctx.globalAlpha = s.size / 2;
+        ctx.fillRect(s.x, s.y, s.size, s.size);
+      });
+      ctx.globalAlpha = 1.0;
+
+      if (state === 'START') {
+        ctx.fillStyle = '#10b981'; ctx.textAlign = 'center';
+        ctx.font = 'bold 30px Courier New'; ctx.fillText('SPACE DEFENDER', canvas.width/2, 200);
+        ctx.font = '16px Courier New'; ctx.fillStyle = '#fff';
+        ctx.fillText('Nhấp chuột vào đây để Bắt Đầu', canvas.width/2, 250);
+        ctx.fillText('Di chuyển: [◀] [▶] hoặc [A] [D]', canvas.width/2, 300);
+        ctx.fillText('Bắn: [SPACE]', canvas.width/2, 330);
+        requestAnimationFrame(gameLoop);
+        return;
+      }
+
+      if (state === 'GAMEOVER') {
+        ctx.fillStyle = '#ef4444'; ctx.textAlign = 'center';
+        ctx.font = 'bold 40px Courier New'; ctx.fillText('GAME OVER', canvas.width/2, 200);
+        ctx.fillStyle = '#fff'; ctx.font = '20px Courier New';
+        ctx.fillText(`Điểm: ${score}`, canvas.width/2, 250);
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('Nhấp chuột để Chơi Lại', canvas.width/2, 320);
+        requestAnimationFrame(gameLoop);
+        return;
+      }
+
+      ctx.fillStyle = '#06b6d4';
+      ctx.shadowBlur = 15; ctx.shadowColor = '#06b6d4';
+      ctx.fillRect(0, 520, canvas.width, 5);
+      ctx.shadowBlur = 0;
+
+      player.update();
+      player.draw();
+
+      ctx.shadowBlur = 15; ctx.shadowColor = '#06b6d4'; ctx.fillStyle = '#06b6d4';
+      bullets.forEach((b, i) => {
+        b.y -= b.speed;
+        ctx.fillRect(b.x - 2, b.y - 10, 4, 15);
+        if (b.y < 0) bullets.splice(i, 1);
+      });
+      ctx.shadowBlur = 0;
+
+      if (frames % Math.max(60, 120 - Math.floor(score/2)) === 0) {
+        let size = 20 + Math.random() * 15;
+        enemies.push({ x: Math.random()*(canvas.width-size), y: -50, size: size, hp: size > 30 ? 2 : 1, speed: 0.5 + Math.random() * 0.7 });
+      }
+
+      enemies.forEach((e, i) => {
+        e.y += e.speed;
+        
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(e.x + e.size/2, e.y + e.size/2, e.size/2, 0, Math.PI * 2, false);
+        ctx.fill();
+
+        if (e.y + e.size >= 520) {
+          createExplosion(e.x + e.size/2, 520, '#06b6d4');
+          baseHp--;
+          enemies.splice(i, 1);
+          if (baseHp <= 0) state = 'GAMEOVER';
+        }
+
+        bullets.forEach((b, j) => {
+          if (b.x > e.x && b.x < e.x + e.size && b.y > e.y && b.y < e.y + e.size) {
+            e.hp--;
+            bullets.splice(j, 1);
+            if(e.hp <= 0) {
+                createExplosion(e.x + e.size/2, e.y + e.size/2, '#ef4444');
+                score += Math.floor(e.size);
+                enemies.splice(i, 1);
+            }
+          }
+        });
+        
+        if (Math.abs(e.x + e.size/2 - player.x) < e.size/2 + 10 && Math.abs(e.y + e.size/2 - player.y) < e.size/2 + 10) {
+            createExplosion(player.x, player.y, '#10b981');
+            state = 'GAMEOVER';
+        }
+      });
+
+      particles.forEach((p, i) => {
+        p.x += p.vx; p.y += p.vy; p.life--;
+        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(p.life / 30, 0);
+        ctx.fillRect(p.x, p.y, 3, 3);
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+      ctx.globalAlpha = 1.0;
+
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Courier New'; ctx.textAlign = 'left';
+      ctx.fillText(`SCORE: ${score}`, 15, 30);
+      
+      ctx.fillStyle = '#ef4444'; ctx.textAlign = 'right';
+      ctx.fillText(`SHIELD: ${'❤'.repeat(baseHp)}`, canvas.width - 15, 30);
+
+      frames++;
+      requestAnimationFrame(gameLoop);
+    }
+
+    canvas.addEventListener('click', () => {
+      if (state === 'START') { state = 'PLAYING'; }
+      else if (state === 'GAMEOVER') {
+        state = 'PLAYING'; score = 0; frames = 0; baseHp = 3; enemies = []; bullets = []; particles = []; player.x = 200;
+      }
+    });
+
+    gameLoop();
+  </script>
+</body>
+</html>
