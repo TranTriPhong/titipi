@@ -134,7 +134,7 @@ const { Content } = await render(project);
         try {
           // Lấy Key đã được mở khóa bằng tiền tố PUBLIC_
           const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
-          if (!apiKey) throw new Error("Sếp chưa đặt PUBLIC_GEMINI_API_KEY trong file .env kìa!");
+          if (!apiKey) throw new Error("Lỗi file .env!");
 
           const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${article?.innerText || ''}\n\nCÂU HỎI: ${question}`;
 
