@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-// 1. Astro sẽ mò vào kho tìm tất cả dự án và tạo sẵn đường dẫn cho tụi nó
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map(project => ({
@@ -11,175 +10,178 @@ export async function getStaticPaths() {
   }));
 }
 
-// 2. Bốc nội dung của dự án đang được click vào
 const { project } = Astro.props;
 const { Content } = await render(project);
 ---
 
 <BaseLayout title={`${project.data.title} | titipi.`} lang="vi">
-  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+  <!-- Layout Grid 12 cột: Trái(2) - Giữa(7) - Phải(3) -->
+  <div class="max-w-[1400px] mx-auto px-4 md:px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
     
-    <!-- Nút quay xe xịn xò -->
-    <a href="/#games" class="group inline-flex items-center gap-2 text-sm font-mono text-black/50 dark:text-white/50 hover:text-emerald-500 dark:hover:text-emerald-400 mb-16 transition-colors">
-      <span class="transition-transform group-hover:-translate-x-1">←</span> 
-      <span>Return</span>
-    </a>
-    
-    <!-- Header bài viết -->
-    <header class="mb-16 border-b border-black/10 dark:border-white/10 pb-12">
-      <div class="flex flex-wrap gap-2 mb-6">
-        {project.data.techStack.map(tag => (
-          <span class="text-[11px] font-mono text-black/70 dark:text-white/70 bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded-full">
-            #{tag}
-          </span>
-        ))}
+    <!-- [CỘT TRÁI] - NÚT RETURN HUB -->
+    <aside class="lg:col-span-2 flex-shrink-0">
+      <div class="sticky top-28">
+        <a href="/#projects" class="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/40 dark:text-white/40 hover:text-emerald-500 transition-colors">
+          <span class="transition-transform group-hover:-translate-x-1">←</span> Return Hub
+        </a>
       </div>
-      
-      <h1 class="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-6 leading-tight tracking-tight">
-        {project.data.title}
-      </h1>
-      
-      <p class="text-lg text-black/60 dark:text-white/60 leading-relaxed border-l-2 border-emerald-500 pl-4">
-        {project.data.description}
-      </p>
-    </header>
+    </aside>
 
-    <!-- NỘI DUNG FILE MARKDOWN SẼ RỚT VÀO ĐÂY -->
-    <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg">
-      <Content />
-    </article>
-    
-    <!-- --- BẮT ĐẦU: KHUNG CHAT AI PHONG CÁCH CLEAN TECH --- -->
-    <section class="mt-16 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 backdrop-blur-sm">
-      <h3 class="text-xl font-bold mb-4 flex items-center gap-2 font-sans tracking-tight">
-        <span class="text-emerald-500">✦</span> Trợ lý AI titipi
-      </h3>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-4">Có phần nào trong bài viết chưa rõ? Hãy hỏi trực tiếp AI nhé.</p>
-      
-      <div class="flex gap-3 mb-4">
-        <input 
-          type="text" 
-          id="ai-input" 
-          placeholder="Ví dụ: Giải thích lại thuật toán này..." 
-          class="flex-1 px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm transition-all"
-        />
-        <button 
-          id="ai-btn" 
-          class="px-6 py-3 bg-zinc-900 hover:bg-emerald-500 dark:bg-white dark:hover:bg-emerald-500 dark:text-black dark:hover:text-white text-white font-semibold rounded-xl text-sm transition-colors"
-        >
-          Hỏi
-        </button>
-      </div>
-
-      <div id="ai-response" class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 hidden p-5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
-        <!-- Nơi nhả chữ của AI -->
-      </div>
-    </section>
-    <!-- --- KẾT THÚC: KHUNG CHAT AI --- -->
-
-    <!-- Container rỗng để chứa bình luận -->
-    <section class="mt-12 pt-10 border-t border-black/10 dark:border-white/10">
-      <div id="giscus-container"></div>
-    </section>
-
-    <script>
-      // ==========================================
-      // PHẦN 1: HÀM XỬ LÝ BÌNH LUẬN GISCUS
-      // ==========================================
-      const loadGiscus = () => {
-        const container = document.getElementById('giscus-container');
-        if (!container) return;
-
-        container.innerHTML = '';
-        const isDark = document.documentElement.classList.contains('dark');
-        const theme = isDark ? 'transparent_dark' : 'light';
-
-        const script = document.createElement('script');
-        script.src = 'https://giscus.app/client.js';
+    <!-- [CỘT GIỮA] - NỘI DUNG CHÍNH -->
+    <main class="lg:col-span-7 min-w-0">
+      <header class="mb-12">
+        <div class="flex flex-wrap gap-2 mb-6">
+          {project.data.techStack.map(tag => (
+            <span class="text-[10px] font-black font-mono uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-md">
+              {tag}
+            </span>
+          ))}
+        </div>
         
-        script.setAttribute('data-repo', 'TranTriPhong/titipi'); 
-        script.setAttribute('data-repo-id', 'R_kgDOSRBQMw5');
-        script.setAttribute('data-category', 'Announcements');
-        script.setAttribute('data-category-id', 'DIC_kwDOSRBQM84C8F6H');
-        script.setAttribute('data-mapping', 'pathname'); 
-        script.setAttribute('data-strict', '0');
-        script.setAttribute('data-reactions-enabled', '1');
-        script.setAttribute('data-emit-metadata', '0');
-        script.setAttribute('data-input-position', 'bottom');
-        script.setAttribute('data-theme', theme);
-        script.setAttribute('data-lang', 'vi');
-        script.setAttribute('crossorigin', 'anonymous');
-        script.async = true;
-
-        container.appendChild(script);
-      };
-
-      // ==========================================
-      // PHẦN 2: HÀM XỬ LÝ TRỢ LÝ AI
-      // ==========================================
-      const setupAI = () => {
-        const btn = document.getElementById('ai-btn');
-        const input = document.getElementById('ai-input') as HTMLInputElement;
-        const responseDiv = document.getElementById('ai-response');
+        <h1 class="text-4xl md:text-6xl font-black text-black dark:text-white mb-8 leading-tight tracking-tighter">
+          {project.data.title}
+        </h1>
         
-        // Vét sạch text của bài viết đang đọc
-        const article = document.querySelector('article');
-        const articleContext = article ? article.innerText : '';
+        <p class="text-xl text-black/60 dark:text-white/60 leading-relaxed max-w-2xl font-medium italic border-l-2 border-emerald-500/20 pl-6">
+          "{project.data.description}"
+        </p>
+      </header>
 
-        btn?.addEventListener('click', async () => {
-          const question = input.value.trim();
-          if (!question) return;
+      <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg pb-16 border-b border-black/5 dark:border-white/5">
+        <Content />
+      </article>
 
-          responseDiv.classList.remove('hidden');
-          responseDiv.innerHTML = '<div class="flex items-center gap-2 text-zinc-500"><svg class="animate-spin h-4 w-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang trích xuất dữ liệu...</div>';
+      <!-- KHU VỰC BÌNH LUẬN -->
+      <section class="mt-20">
+        <div class="flex items-center gap-4 mb-10">
+          <h2 class="text-2xl font-black bold uppercase tracking-tighter text-black dark:text-white">Comments</h2>
+          <div class="flex-grow h-px bg-black/5 dark:bg-white/5"></div>
+        </div>
+        <div id="giscus-container"></div>
+      </section>
+    </main>
 
-          try {
-            const res = await fetch('/api/ask', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ question, context: articleContext })
-            });
-            
-            const data = await res.json();
-            
-            if (data.error) {
-               responseDiv.innerHTML = `<span class="text-red-500">${data.error}</span>`;
-               return;
-            }
+    <!-- [CỘT PHẢI] - CỬA SỔ AI TÍCH HỢP -->
+    <aside class="lg:col-span-3 flex-shrink-0">
+      <div class="sticky top-28">
+        <div class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-black/5 dark:border-white/5 shadow-sm">
+          <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-4 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> titipi AI Analyst
+          </h4>
+          <div class="space-y-3">
+            <textarea 
+              id="right-ai-input" 
+              rows="2" 
+              class="w-full text-[13px] p-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-black focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all resize-none text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30" 
+              placeholder="Hỏi AI về nội dung bài viết..."
+            ></textarea>
+            <button 
+              id="right-ai-btn" 
+              class="w-full py-3 bg-black dark:bg-white text-white dark:text-black text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white transition-all active:scale-95"
+            >
+              Phân tích
+            </button>
+          </div>
+          <!-- Kết quả AI trả về -->
+          <div 
+            id="right-ai-response" 
+            class="hidden mt-4 text-[13px] leading-relaxed text-black/80 dark:text-white/80 p-4 bg-white dark:bg-black rounded-xl border border-black/10 dark:border-white/10 max-h-[300px] overflow-y-auto"
+          ></div>
+        </div>
+      </div>
+    </aside>
 
-            responseDiv.innerHTML = data.answer.replace(/\n/g, '<br>'); 
-            input.value = '';
-          } catch (e) {
-            responseDiv.innerHTML = '<span class="text-red-500">Lỗi mất kết nối máy chủ!</span>';
-          }
-        });
-
-        // Hỗ trợ bấm Enter để gửi câu hỏi
-        input?.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-            btn.click();
-          }
-        });
-      };
-
-      // ==========================================
-      // KÍCH HOẠT CẢ 2 TÍNH NĂNG KHI CHUYỂN TRANG
-      // ==========================================
-      document.addEventListener('astro:page-load', loadGiscus);
-      document.addEventListener('astro:page-load', setupAI);
-    </script>
   </div>
 </BaseLayout>
 
-<!-- CSS trang điểm lại cho nội dung file Markdown -->
+<script>
+  const initScripts = () => {
+    // 1. TẢI GISCUS
+    const container = document.getElementById('giscus-container');
+    if (container && container.innerHTML === '') {
+      const isDark = document.documentElement.classList.contains('dark');
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.setAttribute('data-repo', 'TranTriPhong/titipi');
+      script.setAttribute('data-repo-id', 'R_kgDOSRBQMw5');
+      script.setAttribute('data-category', 'Announcements');
+      script.setAttribute('data-category-id', 'DIC_kwDOSRBQM84C8F6H');
+      script.setAttribute('data-mapping', 'pathname');
+      script.setAttribute('data-theme', isDark ? 'transparent_dark' : 'light');
+      script.setAttribute('data-lang', 'vi');
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
+      container.appendChild(script);
+    }
+
+    // 2. KÍCH HOẠT NÚT AI (GỌI THẲNG LÊN GOOGLE GEMINI)
+    const btn = document.getElementById('right-ai-btn');
+    const input = document.getElementById('right-ai-input') as HTMLTextAreaElement;
+    const responseDiv = document.getElementById('right-ai-response');
+    const article = document.querySelector('article');
+
+    if (btn && input && responseDiv) {
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', async () => {
+        const question = input.value.trim();
+        if (!question) return;
+
+        responseDiv.classList.remove('hidden');
+        responseDiv.innerHTML = '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">Đang phân tích...</span>';
+
+        try {
+          // Lấy Key đã được mở khóa bằng tiền tố PUBLIC_
+          const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
+          if (!apiKey) throw new Error("Sếp chưa đặt PUBLIC_GEMINI_API_KEY trong file .env kìa!");
+
+          const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${article?.innerText || ''}\n\nCÂU HỎI: ${question}`;
+
+          // VƯỢT RÀO: GỌI THẲNG LÊN GOOGLE THAY VÌ /API/ASK
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }]
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error?.message || "Lỗi từ máy chủ Google!");
+
+          responseDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
+          input.value = ''; 
+        } catch (e: any) {
+          responseDiv.innerHTML = `<span class="text-red-500 font-bold">${e.message}</span>`;
+        }
+      });
+
+      input.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          (newBtn as HTMLButtonElement).click(); 
+        }
+      });
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScripts);
+  } else {
+    initScripts();
+  }
+  document.addEventListener('astro:page-load', initScripts);
+</script>
+
 <style is:global>
-  .markdown-content h1, .markdown-content h2, .markdown-content h3 { font-weight: 800; color: inherit; margin-top: 2.5rem; margin-bottom: 1rem; }
-  .markdown-content h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 0.5rem; }
-  .markdown-content p { margin-bottom: 1.5rem; }
-  .markdown-content a { color: #10b981; text-decoration: underline; text-underline-offset: 4px; font-weight: 500;}
-  .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
-  .markdown-content li { margin-bottom: 0.5rem; }
-  .markdown-content code { background-color: rgba(128,128,128,0.1); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #10b981; font-weight: bold;}
-  .markdown-content pre { background-color: #111; padding: 1.5rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
-  .markdown-content pre code { background-color: transparent; color: #e5e5e5; padding: 0; font-weight: normal; }
+  .markdown-content { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .markdown-content h2 { font-size: 1.8rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; color: #10b981; }
+  .markdown-content p { margin-bottom: 1.8rem; line-height: 1.8; }
+  .markdown-content code { color: #10b981; background: rgba(16,185,129,0.1); padding: 0.2em 0.4em; border-radius: 6px; font-weight: 700; font-size: 0.9em; }
+  .markdown-content pre { padding: 2rem; border-radius: 1rem; border: 1px solid rgba(128,128,128,0.1); background: #0a0a0a !important; margin: 2.5rem 0; }
+  
+  #right-ai-response::-webkit-scrollbar { width: 4px; }
+  #right-ai-response::-webkit-scrollbar-track { background: transparent; }
+  #right-ai-response::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
 </style>

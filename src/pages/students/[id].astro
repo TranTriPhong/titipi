@@ -3,36 +3,181 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const students = await getCollection('students');
-  return students.map(student => ({
-    params: { id: student.id },
-    props: { student },
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { id: project.id },
+    props: { project },
   }));
 }
 
-const { student } = Astro.props;
-const { Content } = await render(student);
+const { project } = Astro.props;
+const { Content } = await render(project);
 ---
 
-<BaseLayout title={student.data.title}>
-  <div class="max-w-3xl mx-auto px-6 py-16">
-    <a href="/" class="text-sm font-mono text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white mb-10 inline-block transition-colors border-b border-transparent hover:border-black dark:hover:border-white pb-0.5">
-      [← Return]
-    </a>
+<BaseLayout title={`${project.data.title} | titipi.`} lang="vi">
+  <div class="max-w-[1400px] mx-auto px-4 md:px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
     
-    <header class="mb-12 pb-8 border-b border-black/10 dark:border-white/10">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="text-sm font-bold text-emerald-500 uppercase tracking-widest">{student.data.studentName}</span>
-        <span class="text-xs font-mono text-black/40 dark:text-white/40 border border-black/10 dark:border-white/10 px-2 py-0.5">{student.data.age} tuổi</span>
+    <!-- [CỘT TRÁI] - NÚT RETURN -->
+    <aside class="lg:col-span-2 flex-shrink-0">
+      <div class="sticky top-28">
+        <a href="/#projects" class="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/40 dark:text-white/40 hover:text-emerald-500 transition-colors">
+          <span class="transition-transform group-hover:-translate-x-1">←</span> Return Hub
+        </a>
       </div>
-      <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight">{student.data.title}</h1>
-      <p class="text-lg text-black/60 dark:text-white/60 italic border-l-4 border-emerald-500 pl-4 py-2 bg-black/[0.02] dark:bg-white/[0.02]">
-        "Mentor Note: {student.data.mentorNote}"
-      </p>
-    </header>
+    </aside>
 
-    <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg">
-      <Content />
-    </article>
+    <!-- [CỘT GIỮA] - NỘI DUNG BÀI VIẾT -->
+    <main class="lg:col-span-7 min-w-0">
+      <header class="mb-12">
+        <div class="flex flex-wrap gap-2 mb-6">
+          {project.data.techStack.map(tag => (
+            <span class="text-[10px] font-black font-mono uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-md">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black text-black dark:text-white mb-8 leading-tight tracking-tighter">
+          {project.data.title}
+        </h1>
+        <p class="text-xl text-black/60 dark:text-white/60 leading-relaxed max-w-2xl font-medium italic border-l-2 border-emerald-500/20 pl-6">
+          "{project.data.description}"
+        </p>
+      </header>
+
+      <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg pb-16 border-b border-black/5 dark:border-white/5">
+        <Content />
+      </article>
+
+      <!-- BÌNH LUẬN GISCUS -->
+      <section class="mt-20">
+        <div class="flex items-center gap-4 mb-10">
+          <h2 class="text-2xl font-black italic uppercase tracking-tighter text-black dark:text-white">Community Discussion</h2>
+          <div class="flex-grow h-px bg-black/5 dark:bg-white/5"></div>
+        </div>
+        <div id="giscus-container"></div>
+      </section>
+    </main>
+
+    <!-- [CỘT PHẢI] - KHUNG AI VƯỢT RÀO (GỌI TRỰC TIẾP API) -->
+    <aside class="lg:col-span-3 flex-shrink-0">
+      <div class="sticky top-28">
+        <div class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-black/5 dark:border-white/5 shadow-sm">
+          <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-4 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> titipi AI Analyst
+          </h4>
+          <div class="space-y-3">
+            <textarea 
+              id="right-ai-input" 
+              rows="2" 
+              class="w-full text-[13px] p-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-black focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all resize-none text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30" 
+              placeholder="Hỏi AI về nội dung bài viết này..."
+            ></textarea>
+            <button 
+              id="right-ai-btn" 
+              class="w-full py-3 bg-black dark:bg-white text-white dark:text-black text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white transition-all active:scale-95"
+            >
+              Phân tích
+            </button>
+          </div>
+          <div 
+            id="right-ai-response" 
+            class="hidden mt-4 text-[13px] leading-relaxed text-black/80 dark:text-white/80 p-4 bg-white dark:bg-black rounded-xl border border-black/10 dark:border-white/10 max-h-[400px] overflow-y-auto"
+          ></div>
+        </div>
+      </div>
+    </aside>
+
   </div>
 </BaseLayout>
+
+<script>
+  const initScripts = () => {
+    // 1. TẢI GISCUS
+    const container = document.getElementById('giscus-container');
+    if (container && container.innerHTML === '') {
+      const isDark = document.documentElement.classList.contains('dark');
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.setAttribute('data-repo', 'TranTriPhong/titipi');
+      script.setAttribute('data-repo-id', 'R_kgDOSRBQMw5');
+      script.setAttribute('data-category', 'Announcements');
+      script.setAttribute('data-category-id', 'DIC_kwDOSRBQM84C8F6H');
+      script.setAttribute('data-mapping', 'pathname');
+      script.setAttribute('data-theme', isDark ? 'transparent_dark' : 'light');
+      script.setAttribute('data-lang', 'vi');
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
+      container.appendChild(script);
+    }
+
+    // 2. KÍCH HOẠT NÚT AI (GỌI THẲNG LÊN GOOGLE GEMINI)
+    const btn = document.getElementById('right-ai-btn');
+    const input = document.getElementById('right-ai-input') as HTMLTextAreaElement;
+    const responseDiv = document.getElementById('right-ai-response');
+    const article = document.querySelector('article');
+
+    if (btn && input && responseDiv) {
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', async () => {
+        const question = input.value.trim();
+        if (!question) return;
+
+        responseDiv.classList.remove('hidden');
+        responseDiv.innerHTML = '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">ĐANG SUY NGHĨ...</span>';
+
+        try {
+          // Lấy Key đã được mở khóa bằng tiền tố PUBLIC_
+          const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
+          if (!apiKey) throw new Error("Sếp chưa đặt PUBLIC_GEMINI_API_KEY trong file .env kìa!");
+
+          const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${article?.innerText || ''}\n\nCÂU HỎI: ${question}`;
+
+          // Vượt rào gọi thẳng Google
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }]
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error?.message || "Lỗi từ máy chủ Google!");
+
+          responseDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
+          input.value = ''; 
+        } catch (e: any) {
+          responseDiv.innerHTML = `<span class="text-red-500 font-bold">${e.message}</span>`;
+        }
+      });
+
+      input.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          (newBtn as HTMLButtonElement).click(); 
+        }
+      });
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScripts);
+  } else {
+    initScripts();
+  }
+  document.addEventListener('astro:page-load', initScripts);
+</script>
+
+<style is:global>
+  .markdown-content { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .markdown-content h2 { font-size: 1.8rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; color: #10b981; }
+  .markdown-content p { margin-bottom: 1.8rem; line-height: 1.8; }
+  .markdown-content code { color: #10b981; background: rgba(16,185,129,0.1); padding: 0.2em 0.4em; border-radius: 6px; font-weight: 700; font-size: 0.9em; }
+  .markdown-content pre { padding: 2rem; border-radius: 1rem; border: 1px solid rgba(128,128,128,0.1); background: #0a0a0a !important; margin: 2.5rem 0; }
+  
+  #right-ai-response::-webkit-scrollbar { width: 4px; }
+  #right-ai-response::-webkit-scrollbar-track { background: transparent; }
+  #right-ai-response::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
+</style>
