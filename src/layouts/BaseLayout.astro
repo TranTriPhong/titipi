@@ -74,22 +74,33 @@ const { title, lang = "vi" } = Astro.props;
           </p>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-4 mt-4 md:mt-0">
-          <a href="mailto:tr4ntriphong@gmail.com" class="flex items-center justify-center w-12 h-12 bg-[#EA4335] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300" title="Email">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          </a>
-          
-          <a href="tel:+84375060282" class="flex items-center justify-center w-12 h-12 bg-[#34C759] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-green-500/30 transition-all duration-300" title="Phone">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          </a>
+        <div class="flex flex-col items-center md:items-end gap-6 mt-4 md:mt-0">
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="mailto:tr4ntriphong@gmail.com" class="flex items-center justify-center w-12 h-12 bg-[#EA4335] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300" title="Email">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            
+            <a href="tel:+84375060282" class="flex items-center justify-center w-12 h-12 bg-[#34C759] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-green-500/30 transition-all duration-300" title="Phone">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </a>
 
-          <a href="https://www.facebook.com/ben.vui.tinh.1502" target="_blank" class="flex items-center justify-center w-12 h-12 bg-[#1877F2] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300" title="Facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
-          </a>
+            <a href="https://www.facebook.com/ben.vui.tinh.1502" target="_blank" class="flex items-center justify-center w-12 h-12 bg-[#1877F2] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
 
-          <a href="https://github.com/TranTriPhong" target="_blank" class="flex items-center justify-center w-12 h-12 bg-[#181717] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-gray-500/30 transition-all duration-300" title="GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.394.1 2.646.64.699 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
-          </a>
+            <a href="https://github.com/TranTriPhong" target="_blank" class="flex items-center justify-center w-12 h-12 bg-[#181717] text-white rounded-[14px] hover:scale-110 hover:shadow-lg hover:shadow-gray-500/30 transition-all duration-300" title="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.394.1 2.646.64.699 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            </a>
+          </div>
+
+          <!-- Bổ sung Huy hiệu ISC2 -->
+           <a href="https://www.credly.com/earner/earned/badge/44e397f5-6eb7-42a1-b44e-de891886e29b" target="_blank" class="flex items-center gap-3 p-3 rounded-[14px] border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300">
+             <img src="/isc2-badge.png" alt="ISC2 Certified" class="w-10 h-10 object-contain" />
+             <span class="text-xs font-bold text-black dark:text-white max-w-[120px] leading-tight">
+               ISC2 Certified in Cybersecurity
+             </span>
+            </a>
+
         </div>
       </div>
 
