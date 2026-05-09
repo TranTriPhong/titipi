@@ -6,9 +6,14 @@ const { articleContent } = Astro.props;
 <div id="ai-chat-root">
   <!-- Desktop Sidebar Version -->
   <div id="sidebar-ai" class="hidden lg:block">
-    <div class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-black/5 dark:border-white/5 shadow-sm">
-      <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-4 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> titipi AI
+    <div
+      class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-black/5 dark:border-white/5 shadow-sm"
+    >
+      <h4
+        class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-4 flex items-center gap-2"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+        ></span> titipi AI
       </h4>
       <div class="space-y-3">
         <textarea
@@ -37,21 +42,60 @@ const { articleContent } = Astro.props;
       id="ai-bubble-trigger"
       class="w-14 h-14 bg-emerald-500 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-90 transition-all"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"/><circle cx="17" cy="7" r="5"/></svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"
+        ></path><circle cx="17" cy="7" r="5"></circle>
+      </svg>
     </button>
 
     <div
       id="ai-popup"
       class="hidden absolute bottom-16 right-0 w-[320px] max-h-[450px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-black/10 dark:border-white/10 overflow-hidden flex flex-col"
     >
-      <div class="p-4 bg-zinc-50 dark:bg-zinc-800 border-b border-black/5 dark:border-white/5 flex justify-between items-center">
-        <h4 class="text-[10px] font-black uppercase tracking-widest text-emerald-500">titipi AI Assistant</h4>
-        <button id="close-ai-popup" class="text-black/40 dark:text-white/40 hover:text-red-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      <div
+        class="p-4 bg-zinc-50 dark:bg-zinc-800 border-b border-black/5 dark:border-white/5 flex justify-between items-center"
+      >
+        <h4
+          class="text-[10px] font-black uppercase tracking-widest text-emerald-500"
+        >
+          titipi AI Assistant
+        </h4>
+        <button
+          id="close-ai-popup"
+          class="text-black/40 dark:text-white/40 hover:text-red-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+          </svg>
         </button>
       </div>
-      <div class="flex-1 p-4 overflow-y-auto space-y-4 min-h-[100px]" id="ai-popup-history">
-        <div id="ai-response-popup" class="hidden text-[13px] leading-relaxed text-black/80 dark:text-white/80 p-3 bg-zinc-50 dark:bg-black rounded-xl border border-black/5 dark:border-white/5"></div>
+      <div
+        class="flex-1 p-4 overflow-y-auto space-y-4 min-h-[100px]"
+        id="ai-popup-history"
+      >
+        <div
+          id="ai-response-popup"
+          class="hidden text-[13px] leading-relaxed text-black/80 dark:text-white/80 p-3 bg-zinc-50 dark:bg-black rounded-xl border border-black/5 dark:border-white/5"
+        >
+        </div>
       </div>
       <div class="p-4 border-t border-black/5 dark:border-white/5 space-y-2">
         <textarea
@@ -72,53 +116,66 @@ const { articleContent } = Astro.props;
 
 <script>
   const setupAI = () => {
-    const sidebarInput = document.getElementById('ai-input-sidebar') as HTMLTextAreaElement;
-    const sidebarBtn = document.getElementById('ai-btn-sidebar');
-    const sidebarResponse = document.getElementById('ai-response-sidebar');
-    
-    const popupInput = document.getElementById('ai-input-popup') as HTMLTextAreaElement;
-    const popupBtn = document.getElementById('ai-btn-popup');
-    const popupResponse = document.getElementById('ai-response-popup');
-    const popupTrigger = document.getElementById('ai-bubble-trigger');
-    const popup = document.getElementById('ai-popup');
-    const closePopup = document.getElementById('close-ai-popup');
-    
-    const article = document.querySelector('article');
+    const sidebarInput = document.getElementById(
+      "ai-input-sidebar",
+    ) as HTMLTextAreaElement;
+    const sidebarBtn = document.getElementById("ai-btn-sidebar");
+    const sidebarResponse = document.getElementById("ai-response-sidebar");
+
+    const popupInput = document.getElementById(
+      "ai-input-popup",
+    ) as HTMLTextAreaElement;
+    const popupBtn = document.getElementById("ai-btn-popup");
+    const popupResponse = document.getElementById("ai-response-popup");
+    const popupTrigger = document.getElementById("ai-bubble-trigger");
+    const popup = document.getElementById("ai-popup");
+    const closePopup = document.getElementById("close-ai-popup");
+
+    const article = document.querySelector("article");
 
     if (popupTrigger && popup && closePopup) {
-      popupTrigger.onclick = () => popup.classList.toggle('hidden');
-      closePopup.onclick = () => popup.classList.add('hidden');
+      popupTrigger.onclick = () => popup.classList.toggle("hidden");
+      closePopup.onclick = () => popup.classList.add("hidden");
     }
 
-    const askAI = async (inputEl: HTMLTextAreaElement, responseEl: HTMLElement) => {
+    const askAI = async (
+      inputEl: HTMLTextAreaElement,
+      responseEl: HTMLElement,
+    ) => {
       const question = inputEl.value.trim();
       if (!question) return;
 
-      responseEl.classList.remove('hidden');
-      responseEl.innerHTML = '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">ĐANG PHÂN TÍCH...</span>';
+      responseEl.classList.remove("hidden");
+      responseEl.innerHTML =
+        '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">ĐANG PHÂN TÍCH...</span>';
 
       try {
         const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
         if (!apiKey) throw new Error("Lỗi API Key!");
 
-        const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${article?.innerText || ''}\n\nCÂU HỎI: ${question}`;
+        const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${
+          article?.innerText || ""
+        }\n\nCÂU HỎI: ${question}`;
 
         const res = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
           {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ parts: [{ text: promptText }] }],
             }),
-          }
+          },
         );
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.error?.message || "Lỗi máy chủ!");
 
-        responseEl.innerHTML = data.candidates[0].content.parts[0].text.replace(/\n/g, '<br>');
-        inputEl.value = '';
+        responseEl.innerHTML = data.candidates[0].content.parts[0].text.replace(
+          /\n/g,
+          "<br>",
+        );
+        inputEl.value = "";
       } catch (e: any) {
         responseEl.innerHTML = `<span class="text-red-500 font-bold text-[11px]">${e.message}</span>`;
       }
@@ -126,16 +183,26 @@ const { articleContent } = Astro.props;
 
     if (sidebarBtn && sidebarInput && sidebarResponse) {
       sidebarBtn.onclick = () => askAI(sidebarInput, sidebarResponse);
-      sidebarInput.onkeypress = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sidebarBtn.click(); } };
+      sidebarInput.onkeypress = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sidebarBtn.click();
+        }
+      };
     }
 
     if (popupBtn && popupInput && popupResponse) {
       popupBtn.onclick = () => askAI(popupInput, popupResponse);
-      popupInput.onkeypress = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); popupBtn.click(); } };
+      popupInput.onkeypress = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          popupBtn.click();
+        }
+      };
     }
   };
 
-  document.addEventListener('astro:page-load', setupAI);
+  document.addEventListener("astro:page-load", setupAI);
   setupAI();
 </script>
 
