@@ -9,15 +9,15 @@ export const POST: APIRoute = async ({ request }) => {
     
     // 1. Basic Validation
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length < 5) {
-      return new Response(JSON.stringify({ 
+      return Response.json({ 
         error: { message: "Prompt quá ngắn hoặc không hợp lệ!" } 
-      }), { status: 400 });
+      }, { status: 400 });
     }
 
     if (prompt.length > 5000) {
-      return new Response(JSON.stringify({ 
+      return Response.json({ 
         error: { message: "Prompt quá dài! (Tối đa 5000 ký tự)" } 
-      }), { status: 400 });
+      }, { status: 400 });
     }
 
     const apiKey = GEMINI_API_KEY;
@@ -43,25 +43,23 @@ export const POST: APIRoute = async ({ request }) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Gemini API Error:", data);
-      return new Response(JSON.stringify({
-        error: { message: data.error?.message || "Gemini API returned an error" }
-      }), { status: response.status });
+      console.error("Gemini API Error Status:", response.status);
+      console.error("Gemini API Error Body:", data);
+      return Response.json({
+        error: { message: data.error?.message || `Gemini API returned an error (${response.status})` }
+      }, { status: response.status });
     }
 
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
+    return Response.json(data);
   } catch (e: any) {
     if (e.name === 'AbortError') {
-      return new Response(JSON.stringify({ 
+      return Response.json({ 
         error: { message: "Yêu cầu quá thời gian xử lý. Vui lòng thử lại!" } 
-      }), { status: 504 });
+      }, { status: 504 });
     }
-    console.error("Chat API Error:", e);
-    return new Response(JSON.stringify({ 
+    console.error("Chat API System Error:", e);
+    return Response.json({ 
       error: { message: "Lỗi hệ thống! Vui lòng thử lại sau." } 
-    }), { status: 500 });
+    }, { status: 500 });
   }
 };
