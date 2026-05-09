@@ -151,7 +151,7 @@ const { articleContent } = Astro.props;
 
       try {
         const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
-        if (!apiKey) throw new Error("Lỗi API Key!");
+        if (!apiKey) throw new Error("[CLIENT_ERROR] Lỗi API Key! (Variable is undefined)");
 
         const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${
           article?.innerText || ""
@@ -169,7 +169,11 @@ const { articleContent } = Astro.props;
         );
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error?.message || "Lỗi máy chủ!");
+        if (!res.ok) {
+          const errorStatus = data.error?.status || "ERROR";
+          const errorMessage = data.error?.message || "Lỗi máy chủ!";
+          throw new Error(`[${errorStatus}] ${errorMessage}`);
+        }
 
         responseEl.innerHTML = data.candidates[0].content.parts[0].text.replace(
           /\n/g,
