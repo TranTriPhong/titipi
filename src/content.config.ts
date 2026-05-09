@@ -33,6 +33,7 @@ const knowledge = defineCollection({
     title: z.string(),
     category: z.string(),
     description: z.string(),
+    techStack: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
     publishDate: z.coerce.date(),
   })

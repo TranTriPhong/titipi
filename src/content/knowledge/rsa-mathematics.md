@@ -2,7 +2,7 @@
 title: "Toán học đằng sau thuật toán RSA"
 description: "Giải phẫu cơ chế toán học cốt lõi của mã hóa bất đối xứng RSA: Số nguyên tố, Hàm phi Euler và Số học module."
 techStack: ["Mathematics", "Cryptography", "Algorithms"]
-category: "script"
+category: "knowledge"
 featured: true
 publishDate: 2026-05-01
 ---

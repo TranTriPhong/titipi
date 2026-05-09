@@ -2,7 +2,7 @@
 title: "Phân biệt Băm (Hashing) và Mã hoá (Encryption) trong lưu trữ mật khẩu"
 description: "Tại sao không bao giờ được lưu mật khẩu dưới dạng plain-text? Phân tích cơ chế hoạt động của thuật toán băm (Bcrypt) và kỹ thuật dùng Salt để chống lại tấn công Rainbow Table."
 techStack: ["Cryptography", "Backend", "Security"]
-category: "tool"
+category: "security"
 featured: true
 publishDate: 2026-05-01
 ---

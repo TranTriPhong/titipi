@@ -3,34 +3,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 // Tự động kéo dữ liệu từ kho ra
-const featuredProjects = await getCollection('projects', ({ data }) => data.featured === true);
+const featuredKnowledge = await getCollection('knowledge', ({ data }) => data.featured === true);
 const featuredStudents = await getCollection('students', ({ data }) => data.featured === true);
 ---
 
 <BaseLayout title="Trang Chủ" lang="vi">
   <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
     
-    <!-- PROJECT CENTER -->
+    <!-- PROJECT CENTER (EMPTY AS REQUESTED) -->
     <section id="projects" class="mb-24">
       <h2 class="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-[0.2em] mb-8 border-b border-black/10 dark:border-white/10 pb-4">Personal Projects</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {featuredProjects.map((p) => (
-          <div class="group p-8 rounded-2xl border border-black/10 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all duration-300 flex flex-col justify-between bg-black/[0.02] dark:bg-white/[0.02]">
+      <div class="p-12 border-2 border-dashed border-black/5 dark:border-white/5 rounded-3xl flex items-center justify-center">
+        <p class="text-[10px] font-black uppercase tracking-widest text-black/20 dark:text-white/20">Coming Soon</p>
+      </div>
+    </section>
+
+    <!-- KNOWLEDGE HUB PREVIEW -->
+    <section id="knowledge" class="mb-24">
+      <h2 class="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-[0.2em] mb-8 border-b border-black/10 dark:border-white/10 pb-4">Knowledge Highlights</h2>
+      <div class="grid grid-cols-1 gap-4">
+        {featuredKnowledge.map((k) => (
+          <a href={`/knowledge/${k.id}`} class="group p-6 rounded-2xl border border-black/10 dark:border-white/10 hover:border-emerald-500 transition-all flex justify-between items-center bg-black/[0.01] dark:bg-white/[0.01]">
             <div>
-                <h3 class="text-2xl font-bold text-black dark:text-white mb-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{p.data.title}</h3>
-                <p class="text-sm text-black/60 dark:text-white/60 mb-8 leading-relaxed">{p.data.description}</p>
+              <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest block mb-1">{k.data.category}</span>
+              <h3 class="text-xl font-bold text-black dark:text-white group-hover:text-emerald-500 transition-colors">{k.data.title}</h3>
             </div>
-            <div class="flex items-center justify-between mt-auto">
-              <div class="flex flex-wrap gap-2">
-                {p.data.techStack.map(tag => <span class="text-[11px] font-mono text-black/70 dark:text-white/70 bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded-full">#{tag}</span>)}
-              </div>
-              <!-- Đã độ lại nút bấm: Chữ Tây, In hoa cỡ nhỏ, Giãn chữ, Mũi tên chéo và hiệu ứng bay chữ -->
-              <a href={`/projects/${p.id}`} class="group/btn flex items-center gap-1.5 bg-black text-white dark:bg-white dark:text-black px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-widest rounded-full hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white transition-all duration-300">
-                <span>View Project</span> 
-                <span class="text-sm leading-none transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5">↗</span>
-              </a>
-            </div>
-          </div>
+            <span class="text-black/20 dark:text-white/20 group-hover:translate-x-1 transition-transform">→</span>
+          </a>
         ))}
       </div>
     </section>

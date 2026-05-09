@@ -2,7 +2,7 @@
 title: "Elliptic Curve Cryptography (ECC): Tương lai của mã hóa bất đối xứng"
 description: "Tại sao ECC với khóa 256-bit có thể đánh bại RSA 3072-bit? Khám phá sức mạnh toán học của Đường cong Elliptic trong bảo mật hiện đại."
 publishDate: 2026-05-02
-category: "Cryptography"
+category: "security"
 featured: true
 ---
 

@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import ChatAI from "../../components/ChatAI.astro";
+
+export async function getStaticPaths() {
+  const knowledge = await getCollection("knowledge");
+  return knowledge.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | titipi.`} lang="vi">
+  <div class="max-w-[1400px] mx-auto px-4 md:px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <!-- CỘT TRÁI - RETURN HUB -->
+    <aside class="lg:col-span-2 flex-shrink-0">
+      <div class="sticky top-28">
+        <a
+          href="/knowledge"
+          class="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-black/40 dark:text-white/40 hover:text-emerald-500 transition-colors"
+        >
+          <span class="transition-transform group-hover:-translate-x-1">←</span>
+          Return Knowledge Hub
+        </a>
+      </div>
+    </aside>
+
+    <!-- CỘT GIỮA - NỘI DUNG CHÍNH -->
+    <main class="lg:col-span-7 min-w-0">
+      <header class="mb-12">
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="text-[10px] font-black font-mono uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-md">
+            {post.data.category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-8 leading-snug tracking-tight">
+          {post.data.title}
+        </h1>
+
+        <p class="text-xl text-black/60 dark:text-white/60 leading-relaxed max-w-2xl font-medium italic border-l-2 border-emerald-500/20 pl-6">
+          "{post.data.description}"
+        </p>
+      </header>
+
+      <article class="markdown-content text-black/80 dark:text-white/80 leading-relaxed text-lg pb-16 border-b border-black/5 dark:border-white/5">
+        <Content />
+      </article>
+
+      <!-- KHU VỰC BÌNH LUẬN (GIỮ NGUYÊN GISCUS CHO ĐỒNG BỘ) -->
+      <section class="mt-20">
+        <div class="flex items-center gap-4 mb-10">
+          <h2 class="text-2xl font-black uppercase tracking-tighter text-black dark:text-white">Comments</h2>
+          <div class="flex-grow h-px bg-black/5 dark:bg-white/5"></div>
+        </div>
+        <div id="giscus-container"></div>
+      </section>
+    </main>
+
+    <!-- CỘT PHẢI - AI ASSISTANT -->
+    <aside class="lg:col-span-3 flex-shrink-0">
+      <div class="sticky top-28">
+        <ChatAI />
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  // Script giscus copy từ projects/[id].astro
+  const initGiscus = () => {
+    const container = document.getElementById("giscus-container");
+    if (container && container.innerHTML === "") {
+      const isDark = document.documentElement.classList.contains("dark");
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.setAttribute("data-repo", "TranTriPhong/titipi");
+      script.setAttribute("data-repo-id", "R_kgDOSRBQMw5");
+      script.setAttribute("data-category", "Announcements");
+      script.setAttribute("data-category-id", "DIC_kwDOSRBQM84C8F6H");
+      script.setAttribute("data-mapping", "pathname");
+      script.setAttribute("data-theme", isDark ? "transparent_dark" : "light");
+      script.setAttribute("data-lang", "vi");
+      script.setAttribute("crossorigin", "anonymous");
+      script.async = true;
+      container.appendChild(script);
+    }
+  };
+  document.addEventListener("astro:page-load", initGiscus);
+  initGiscus();
+</script>
+
+<style is:global>
+  /* Reuse styles from projects */
+  .markdown-content h2 { font-size: 1.8rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; color: #10b981; }
+  .markdown-content p { margin-bottom: 1.8rem; line-height: 1.8; }
+  .markdown-content code { color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.2em 0.4em; border-radius: 6px; font-weight: 700; font-size: 0.9em; }
+  .markdown-content pre { padding: 2rem; border-radius: 1rem; border: 1px solid rgba(128, 128, 128, 0.1); background: #0a0a0a !important; margin: 2.5rem 0; }
+</style>
