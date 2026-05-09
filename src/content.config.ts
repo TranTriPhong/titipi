@@ -40,4 +40,15 @@ const knowledge = defineCollection({
   })
 });
 
-export const collections = { projects, students, knowledge };
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    description: z.string(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  })
+});
+
+export const collections = { projects, students, knowledge, blog };

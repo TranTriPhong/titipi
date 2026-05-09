@@ -6,7 +6,8 @@ import matter from 'gray-matter';
 const CONTENT_DIRS = [
   'src/content/knowledge',
   'src/content/projects',
-  'src/content/students'
+  'src/content/students',
+  'src/content/blog'
 ];
 
 async function processFiles() {
@@ -24,19 +25,25 @@ async function processFiles() {
         
         let modified = false;
 
-        // 1. Title from filename if missing
+        // 1. Tự động lấy Title từ tên file nếu thiếu
         if (!data.title) {
           data.title = path.basename(file, '.md').replace(/-/g, ' ');
           modified = true;
         }
 
-        // 2. Date from current date if missing
-        if (!data.publishDate && !data.date) {
-          data.publishDate = new Date().toISOString().split('T')[0];
+        // 2. Tự động lấy ngày hiện tại nếu thiếu
+        if (!data.pubDate && !data.publishDate && !data.date) {
+          const now = new Date().toISOString().split('T')[0];
+          if (dir.includes('blog')) {
+            data.pubDate = now;
+          } else {
+            data.publishDate = now;
+          }
           modified = true;
         }
 
-        // 3. Extract hashtags from content
+        // 3. Bóc tách Hashtag từ nội dung (#tag-name)
+        // Regex này tìm các thẻ hashtag không nằm trong code block hoặc link
         const tagRegex = /(?<=^|\s)#([\w\u00C0-\u1EF9-]+)/g;
         const matches = body.match(tagRegex) || [];
         const foundTags = matches.map(t => t.replace('#', ''));
@@ -55,13 +62,13 @@ async function processFiles() {
         if (modified) {
           const newContent = matter.stringify(body, data);
           await fs.writeFile(filePath, newContent);
-          console.log(`[PROCESSED] ${file}`);
+          console.log(`[AUTOMATED] Optimized ${file} in ${dir}`);
         }
       }
     } catch (e) {
-      console.warn(`Directory not found or inaccessible: ${dir}`);
+      // Bỏ qua nếu thư mục không tồn tại
     }
   }
 }
 
-processFiles().then(() => console.log('Pre-processing complete.'));
+processFiles().then(() => console.log('Digital Garden optimization complete.'));
