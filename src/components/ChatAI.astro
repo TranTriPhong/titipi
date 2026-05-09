@@ -1,9 +1,10 @@
 ---
 // src/components/ChatAI.astro
 const { articleContent } = Astro.props;
+const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
 ---
 
-<div id="ai-chat-root">
+<div id="ai-chat-root" data-api-key={apiKey}>
   <!-- Desktop Sidebar Version -->
   <div id="sidebar-ai" class="hidden lg:block">
     <div
@@ -150,7 +151,8 @@ const { articleContent } = Astro.props;
         '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">ĐANG PHÂN TÍCH...</span>';
 
       try {
-        const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
+        const root = document.getElementById("ai-chat-root");
+        const apiKey = root?.dataset.apiKey;
         if (!apiKey) throw new Error("[CLIENT_ERROR] Lỗi API Key! (Variable is undefined)");
 
         const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${
