@@ -4,6 +4,8 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import react from '@astrojs/react';
+import remarkWikiLink from 'remark-wiki-link';
 
 export default defineConfig({
   env: {
@@ -19,9 +21,18 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   markdown: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [
+      remarkMath,
+      [remarkWikiLink, { 
+        pathFormat: 'obsidian-short',
+        hrefTemplate: (permalink) => `/knowledge/${permalink.toLowerCase().replace(/ /g, '-')}`
+      }]
+    ],
     rehypePlugins: [rehypeKatex],
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap(),
+    react()
+  ],
   adapter: vercel(),
 });

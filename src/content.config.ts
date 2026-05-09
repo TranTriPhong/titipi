@@ -31,8 +31,9 @@ const knowledge = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/knowledge" }),
   schema: z.object({
     title: z.string(),
-    category: z.string(),
-    description: z.string(),
+    category: z.string().optional().default('General'),
+    description: z.string().optional().default(''),
+    tags: z.array(z.string()).default([]),
     techStack: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
     publishDate: z.coerce.date(),
