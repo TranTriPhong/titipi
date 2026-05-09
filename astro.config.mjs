@@ -38,7 +38,7 @@ export default defineConfig({
   },
   markdown: {
     shikiConfig: {
-      theme: 'tokyo-night',
+      theme: 'dracula',
       wrap: true,
     },
     remarkPlugins: [

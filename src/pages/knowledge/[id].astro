@@ -51,13 +51,13 @@ const { Content } = await render(post);
         <Content />
       </article>
 
-      <!-- KHU VỰC BÌNH LUẬN (GIỮ NGUYÊN GISCUS CHO ĐỒNG BỘ) -->
-      <section class="mt-20">
+      <!-- KHU VỰC BÌNH LUẬN -->
+      <section class="mt-20 w-full overflow-hidden">
         <div class="flex items-center gap-4 mb-10">
           <h2 class="text-2xl font-black uppercase tracking-tighter text-black dark:text-white">Comments</h2>
           <div class="flex-grow h-px bg-black/5 dark:bg-white/5"></div>
         </div>
-        <div id="giscus-container"></div>
+        <div id="giscus-container" class="w-full min-h-[200px]"></div>
       </section>
     </main>
 
