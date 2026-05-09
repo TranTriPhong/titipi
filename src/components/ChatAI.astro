@@ -98,7 +98,7 @@ const { articleContent } = Astro.props;
       responseEl.innerHTML = '<span class="text-emerald-500 font-bold animate-pulse text-[11px] uppercase tracking-widest">ĐANG PHÂN TÍCH...</span>';
 
       try {
-        const apiKey = (import.meta as any).env.PUBLIC_GEMINI_API_KEY;
+        const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY;
         if (!apiKey) throw new Error("Lỗi API Key!");
 
         const promptText = `Bạn là trợ lý AI chuyên nghiệp trên blog titipi. Trả lời cực kỳ ngắn gọn, dễ hiểu dựa vào bài viết sau.\n\nNỘI DUNG BÀI:\n${article?.innerText || ''}\n\nCÂU HỎI: ${question}`;
