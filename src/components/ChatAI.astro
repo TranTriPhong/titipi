@@ -181,8 +181,18 @@
           body: JSON.stringify({ prompt: promptText }),
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error?.message || "Lỗi máy chủ");
+        // Check if response is JSON
+        const contentType = res.headers.get("content-type");
+        let data;
+        if (contentType && contentType.includes("application/json")) {
+          data = await res.json();
+        } else {
+          const text = await res.text();
+          console.error("Server returned non-JSON response:", text);
+          throw new Error("Máy chủ phản hồi không đúng định dạng. Có thể do lỗi cấu hình hoặc API Key.");
+        }
+
+        if (!res.ok) throw new Error(data?.error?.message || `Lỗi máy chủ (${res.status})`);
 
         const responseText = data.candidates[0].content.parts[0].text;
         aiContentEl.textContent = '';
