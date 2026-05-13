@@ -13,17 +13,29 @@ knowledgePosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.
 <BaseLayout title="Knowledge Hub | titipi." lang="vi">
   <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
     
-    <header class="mb-16 border-b border-black/10 dark:border-white/10 pb-12">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-6 tracking-tight">
-        Knowledge Hub
-      </h1>
-      <p class="text-lg text-black/60 dark:text-white/60 leading-relaxed border-l-2 border-emerald-500 pl-4 mb-8">
-        Trung tâm lưu trữ kiến thức. Nơi ghi chép lại các thuật toán, tư duy logic, toán học và kiến trúc hệ thống.
-      </p>
-      
+    <header class="mb-16">
       {/* Search Component (Island) */}
       <Search client:load allPosts={knowledgePosts} />
     </header>
+
+    <div class="grid grid-cols-1 gap-6">
+      {knowledgePosts.map((post) => (
+        <a href={`/knowledge/${post.id}`} class="group p-6 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-zinc-50/50 dark:bg-white/[0.02]">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors font-outfit">{post.data.title}</h3>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-2">{post.data.description}</p>
+          </div>
+          <div class="flex flex-col sm:items-end gap-3 min-w-[120px]">
+            <span class="text-[10px] font-mono text-zinc-400 border border-zinc-100 dark:border-white/10 px-2 py-1 rounded-md uppercase">
+              {post.data.publishDate.toISOString().split('T')[0]}
+            </span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-500 group-hover:translate-x-1 transition-transform">
+              Explore ↗
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
 
   </div>
 </BaseLayout>

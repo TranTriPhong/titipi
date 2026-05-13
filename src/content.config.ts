@@ -37,6 +37,7 @@ const knowledge = defineCollection({
     techStack: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
     publishDate: z.coerce.date(),
+    stage: z.enum(['seed', 'sapling', 'evergreen']).default('seed'),
   })
 });
 
@@ -48,6 +49,7 @@ const blog = defineCollection({
     description: z.string(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    stage: z.enum(['seed', 'sapling', 'evergreen']).default('seed'),
   })
 });
 

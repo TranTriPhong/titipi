@@ -78,8 +78,8 @@ const Search: React.FC<SearchProps> = ({ allPosts }) => {
     <div className="w-full max-w-2xl mx-auto space-y-8 animate-in fade-in duration-700">
       {/* Search Input Area */}
       <div className="relative group">
-        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-          <svg className="h-4 w-4 text-zinc-500 group-focus-within:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+          <svg className="h-4 w-4 text-zinc-400 group-focus-within:text-zinc-900 dark:group-focus-within:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -89,20 +89,20 @@ const Search: React.FC<SearchProps> = ({ allPosts }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Tìm kiếm kiến thức... (Ctrl + K)"
-          className="w-full bg-zinc-950/50 backdrop-blur-sm border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-500/50 focus:border-zinc-500/50 transition-all placeholder:text-zinc-600"
+          className="w-full bg-transparent border-b border-zinc-200 dark:border-white/10 py-4 pl-8 pr-4 text-sm text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-zinc-900 dark:focus:border-white transition-all placeholder:text-zinc-400"
         />
-        <div className="absolute right-4 inset-y-0 flex items-center pointer-events-none">
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-500 bg-zinc-900 border border-white/10 rounded-md">
+        <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-mono font-medium text-zinc-400 border border-zinc-200 dark:border-white/10 rounded">
             Ctrl K
           </kbd>
         </div>
       </div>
 
-      {/* Tag Cloud - Minimalist zinc style */}
+      {/* Tag Cloud - Fully Transparent */}
       <div className="flex flex-wrap gap-2 justify-center">
         <button
           onClick={() => setSelectedTag(null)}
-          className={`px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-full border transition-all ${!selectedTag ? 'bg-zinc-100 text-black border-zinc-100' : 'bg-transparent border-white/5 text-zinc-500 hover:border-zinc-500/50'}`}
+          className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all ${!selectedTag ? 'text-zinc-900 dark:text-white border-b-2 border-zinc-900 dark:border-white' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'}`}
         >
           Tất cả
         </button>
@@ -110,7 +110,7 @@ const Search: React.FC<SearchProps> = ({ allPosts }) => {
           <button
             key={tag}
             onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-            className={`px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-full border transition-all ${tag === selectedTag ? 'bg-zinc-100 text-black border-zinc-100' : 'bg-transparent border-white/5 text-zinc-500 hover:border-zinc-500/50'}`}
+            className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all ${tag === selectedTag ? 'text-zinc-900 dark:text-white border-b-2 border-zinc-900 dark:border-white' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'}`}
           >
             #{tag}
           </button>
